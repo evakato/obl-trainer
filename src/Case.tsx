@@ -1,11 +1,9 @@
-const movesA: number[] = [0, 3, -3, 6];
-const movesB: number[] = [2, 5, -1, -4];
-const movesC: number[] = [1, 4, -2, -5];
-export class Case {
+export default class Case {
     private tc: Array<number>;
     private bc: Array<number>;
     private te: Array<number>;
     private be: Array<number>;
+    //private optimal: number;
 
     constructor (tc: Array<number>, bc: Array<number>, te: Array<number>, be: Array<number>) {
         this.tc = tc;
@@ -18,6 +16,12 @@ export class Case {
     getbc(): Array<number> { return this.bc };
     gette(): Array<number> { return this.te };
     getbe(): Array<number> { return this.be };
+
+    audf(u: number, d: number): Case {
+        let topPos: Array<Array<number>> = this.topMove(u);
+        let bottomPos: Array<Array<number>> = this.bottomMove(d);
+        return new Case(topPos[0], bottomPos[0], topPos[1], bottomPos[1]);
+    }
 
     // offset: 0 when 1,0; 1 when -1,0
     slice(offset: number): Case {
@@ -87,6 +91,7 @@ export class Case {
         return a.every((val, index) => val === b[index]);
     }
 
+    //move: 1, 2, or 3 (U, U2, U')
     topMove(move: number): Array<Array<number>> {
         let newtc: Array<number> = [];
         let newte: Array<number> = [];
@@ -120,4 +125,4 @@ export class Case {
     }
 }
 
-let solved = new Case([1, 2, 3, 4], [], [1, 2, 3, 4], []);
+
