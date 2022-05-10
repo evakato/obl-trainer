@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.time {
+  display: block;
+  flex-grow: 1;
+  margin: 0.3rem 1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #878769;
+  font-size: 1.5rem;
+}

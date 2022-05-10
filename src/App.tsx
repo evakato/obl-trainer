@@ -1,20 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Case from './Case';
+import React, { useState, useEffect } from "react";
+import TimerPage from "./TimerPage";
+import SelectionPage from "./SelectionPage";
 
 function App() {
-  let solved = new Case([1, 2, 3, 4], [], [1, 2, 3, 4], []);
-  // 1,0/-4,-1/
-  let kitekite = solved.slice(0).audf(3,0).slice(1);
-  return (
-    <div className="App">
-      Top corners: {kitekite.gettc()} 
-      Top edges: {kitekite.gette()}
-      Bottom corners: {kitekite.getbc()}
-      Bottom edges: {kitekite.getbe()}
-    </div>
-  );
+  const [selection, setSelection] = useState(false);
+
+  //{!selection ? <SelectionPage></SelectionPage> : <TimerPage></TimerPage>}
+  return <TimerPage></TimerPage>;
 }
 
 export default App;

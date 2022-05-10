@@ -1,0 +1,47 @@
+.header {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+}
+.scramble {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2rem;
+  color: #878769;
+  border-style: double;
+  padding-left: 1rem;
+  margin: 0.2rem;
+  border-radius: 5px;
+}
+
+
+.selection {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.5rem;
+  color: #bb8588;
+  text-align: center;
+  border-style: double;
+  margin: 0.2rem;
+  border-radius: 5px;
+}
+
+@media (max-width: 500px) {
+  .scramble {
+    font-size:0.8rem;
+  }
+  .selection {
+    font-size:0.8rem;
+  }
+}
+
+.selection:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.select-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  position: relative;
+  top: 1px;
+  left: 1px;
+}

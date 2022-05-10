@@ -1,0 +1,38 @@
+.body {
+  overflow: hidden;
+}
+
+.grid-container {
+  background-color: #efebce;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1fr;
+}
+
+.header {
+  background-color: #eae6ca;
+}
+
+.sidebar {
+  background-color: #eae6ca;
+  overflow-y: auto;
+  color: #878769;
+  border-style: double;
+  margin: 0.2rem;
+  border-radius: 5px;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  overflow: hidden;
+}
+
+@media (max-width: 500px) {
+  .main {
+    grid-template-columns: none;
+    grid-template-rows: 1fr 9fr;
+  }
+}
