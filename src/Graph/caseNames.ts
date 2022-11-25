@@ -39,9 +39,9 @@ export const caseNames: { [key: string]: Array<string> } = {
     "left axe/right spill",
   ],
   "same spill/spill": ["left spill/left spill", "right spill/right spill"],
-  "different spill/spill": ["left spill/right spill", "right spill/left spill"],
+  "opp spill/spill": ["left spill/right spill", "right spill/left spill"],
   "same axe/axe": ["left axe/left axe", "right axe/right axe"],
-  "different axe/axe": ["left axe/right axe", "right axe/left axe"],
+  "opp axe/axe": ["left axe/right axe", "right axe/left axe"],
   "squid/squid": ["squid/squid"],
   "squid/axe": [
     "squid/right axe",

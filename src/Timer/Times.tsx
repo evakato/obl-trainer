@@ -3,7 +3,7 @@ import "./Times.css";
 
 export default function Times(props: any) {
   return (
-    <div className="container">
+    <div>
       {props.times
         .slice(0)
         .reverse()

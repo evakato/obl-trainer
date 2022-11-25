@@ -8,6 +8,7 @@ import generateScramble from "./Graph/App";
 import generateGraph from "./Graph/generateGraph";
 import SelectionPage from "./SelectionPage";
 import { caseNames } from "./Graph/caseNames";
+import { categories } from "./Graph/categories";
 
 interface TimerState {
   selectionPage: boolean;
@@ -19,6 +20,7 @@ interface TimerState {
   nextScramble?: string;
   intervalId: any;
   caseSelections: Array<string>;
+  nameCaseSelections: Array<string>;
 }
 
 interface TimerProps {}
@@ -36,6 +38,7 @@ class TimerPage extends Component<TimerProps, TimerState> {
       nextScramble: "",
       intervalId: null,
       caseSelections: [],
+      nameCaseSelections: [],
     };
     this.handleSpace = this.handleSpace.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
@@ -86,6 +89,9 @@ class TimerPage extends Component<TimerProps, TimerState> {
     this.setState({
       caseSelections: [...this.state.caseSelections, ...caseNames[caseName]],
     });
+    this.setState({
+      nameCaseSelections: [...this.state.nameCaseSelections, caseName],
+    });
   };
 
   removeCaseSelections = (caseName: string) => {
@@ -96,22 +102,61 @@ class TimerPage extends Component<TimerProps, TimerState> {
         return !caseNames[caseName].includes(caseSelection);
       }),
     });
+    this.setState({
+      nameCaseSelections: this.state.nameCaseSelections.filter(function (
+        nameCaseSelection
+      ) {
+        return caseName !== nameCaseSelection;
+      }),
+    });
   };
 
-  selectAll = () => {
+  selectAll = (caseCategory: string, caseSubcategory: string) => {
+    this.selectNone(caseCategory, caseSubcategory);
+    this.setState({
+      caseSelections: [
+        ...this.state.caseSelections,
+        ...this.getAllCasesByCategory(caseCategory, caseSubcategory),
+      ],
+    });
+    this.setState({
+      nameCaseSelections: [
+        ...this.state.nameCaseSelections,
+        ...categories[caseCategory][caseSubcategory],
+      ],
+    });
+  };
+
+  selectNone = (caseCategory: string, caseSubcategory: string) => {
+    this.setState({
+      nameCaseSelections: this.state.nameCaseSelections.filter(
+        (val) => !categories[caseCategory][caseSubcategory].includes(val)
+      ),
+    });
+    this.setState({
+      caseSelections: this.state.caseSelections.filter(
+        (val) =>
+          !this.getAllCasesByCategory(caseCategory, caseSubcategory).includes(
+            val
+          )
+      ),
+    });
+  };
+
+  getAllCasesByCategory = (
+    caseCategory: string,
+    caseSubcategory: string
+  ): Array<string> => {
     let allCaseSelections: Array<string> = [];
-    Object.keys(caseNames).map((key, i) => {
-      allCaseSelections.push(...caseNames[key]);
-    });
-    this.setState({
-      caseSelections: allCaseSelections,
-    });
+    categories[caseCategory][caseSubcategory].map((eachCase: string) =>
+      allCaseSelections.push(...caseNames[eachCase])
+    );
+    return allCaseSelections;
   };
 
-  selectNone = () => {
-    const noSelection: Array<string> = [];
+  resetTimes = () => {
     this.setState({
-      caseSelections: noSelection,
+      timeList: [],
     });
   };
 
@@ -196,7 +241,7 @@ class TimerPage extends Component<TimerProps, TimerState> {
             setCaseSelections={this.setCaseSelections}
             addCaseSelections={this.addCaseSelections}
             removeCaseSelections={this.removeCaseSelections}
-            selectedCases={this.state.caseSelections}
+            selectedCases={this.state.nameCaseSelections}
             selectAllOnClick={this.selectAll}
             selectNoneOnClick={this.selectNone}
           ></SelectionPage>
@@ -207,8 +252,13 @@ class TimerPage extends Component<TimerProps, TimerState> {
               onClick={this.showPage}
             ></Scramble>
             <div className="main">
-              <div className="sidebar">
-                <Times times={this.state.timeList}></Times>
+              <div className="sidebar-layout">
+                <div className="sidebar">
+                  <Times times={this.state.timeList}></Times>
+                </div>
+                <div className="selection" onClick={this.resetTimes}>
+                  Reset
+                </div>
               </div>
               <div className="timer" onTouchStart={this.handleTouchStart}>
                 <Timer time={this.state.time} />
