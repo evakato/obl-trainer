@@ -9,4 +9,13 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #878769;
   font-size: 1.5rem;
+  cursor: default;
+}
+
+.time-info {
+  background-color: #878769;
+}
+
+.tooltip-style {
+  font-size: 20px;
 }

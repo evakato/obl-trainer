@@ -15,9 +15,10 @@ interface TimerState {
   isActive: boolean;
   time: number;
   timeList: Array<any>;
+  scrambleList: Array<string>;
   graph: Graph;
-  scramble?: string;
-  nextScramble?: string;
+  scramble: string;
+  nextScramble: string;
   intervalId: any;
   caseSelections: Array<string>;
   nameCaseSelections: Array<string>;
@@ -33,6 +34,7 @@ class TimerPage extends Component<TimerProps, TimerState> {
       isActive: false,
       time: 0,
       timeList: [],
+      scrambleList: [],
       graph: generateGraph(),
       scramble: "",
       nextScramble: "",
@@ -48,6 +50,7 @@ class TimerPage extends Component<TimerProps, TimerState> {
     this.removeCaseSelections = this.removeCaseSelections.bind(this);
     this.selectAll = this.selectAll.bind(this);
     this.selectNone = this.selectNone.bind(this);
+    this.selectAllInCategory = this.selectAllInCategory.bind(this);
   }
 
   showPage = () => {
@@ -88,8 +91,6 @@ class TimerPage extends Component<TimerProps, TimerState> {
   addCaseSelections = (caseName: string) => {
     this.setState({
       caseSelections: [...this.state.caseSelections, ...caseNames[caseName]],
-    });
-    this.setState({
       nameCaseSelections: [...this.state.nameCaseSelections, caseName],
     });
   };
@@ -118,13 +119,21 @@ class TimerPage extends Component<TimerProps, TimerState> {
         ...this.state.caseSelections,
         ...this.getAllCasesByCategory(caseCategory, caseSubcategory),
       ],
-    });
-    this.setState({
       nameCaseSelections: [
         ...this.state.nameCaseSelections,
         ...categories[caseCategory][caseSubcategory],
       ],
     });
+  };
+
+  selectAllInCategory = (caseCategory: string) => {
+    let allSubCategories: Array<string> = Object.keys(categories[caseCategory]);
+    console.log(allSubCategories);
+    /*
+    allSubCategories.forEach((subCategory: string) => {
+      this.selectAll(caseCategory, subCategory);
+    });
+    */
   };
 
   selectNone = (caseCategory: string, caseSubcategory: string) => {
@@ -157,6 +166,7 @@ class TimerPage extends Component<TimerProps, TimerState> {
   resetTimes = () => {
     this.setState({
       timeList: [],
+      scrambleList: [],
     });
   };
 
@@ -168,9 +178,9 @@ class TimerPage extends Component<TimerProps, TimerState> {
           return { time: this.state.time + 10 };
         });
       }, 10);
-      this.setState({ intervalId: interval });
-      this.setState({ isActive: true });
       this.setState({
+        intervalId: interval,
+        isActive: true,
         nextScramble: generateScramble(
           this.state.graph,
           this.state.caseSelections
@@ -183,8 +193,11 @@ class TimerPage extends Component<TimerProps, TimerState> {
           timeList: [...this.state.timeList, this.state.time],
         });
       }
-      this.setState({ isActive: false });
-      this.setState({ scramble: this.state.nextScramble });
+      this.setState({
+        scrambleList: [...this.state.scrambleList, this.state.scramble],
+        isActive: false,
+        scramble: this.state.nextScramble,
+      });
     }
     return () => {
       clearInterval(this.state.intervalId);
@@ -200,13 +213,14 @@ class TimerPage extends Component<TimerProps, TimerState> {
             return { time: this.state.time + 10 };
           });
         }, 10);
-        this.setState({ intervalId: interval });
-        this.setState({ isActive: true });
         this.setState({
+          intervalId: interval,
+          isActive: true,
           nextScramble: generateScramble(
             this.state.graph,
             this.state.caseSelections
           ),
+          scrambleList: [...this.state.scrambleList, this.state.scramble],
         });
       } else {
         clearInterval(this.state.intervalId);
@@ -215,8 +229,11 @@ class TimerPage extends Component<TimerProps, TimerState> {
             timeList: [...this.state.timeList, this.state.time],
           });
         }
-        this.setState({ isActive: false });
-        this.setState({ scramble: this.state.nextScramble });
+        this.setState({
+          scrambleList: [...this.state.scrambleList, this.state.scramble],
+          isActive: false,
+          scramble: this.state.nextScramble,
+        });
       }
       return () => {
         clearInterval(this.state.intervalId);
@@ -244,6 +261,7 @@ class TimerPage extends Component<TimerProps, TimerState> {
             selectedCases={this.state.nameCaseSelections}
             selectAllOnClick={this.selectAll}
             selectNoneOnClick={this.selectNone}
+            selectAllInCategoryOnClick={this.selectAllInCategory}
           ></SelectionPage>
         ) : (
           <div className="grid-container">
@@ -254,10 +272,13 @@ class TimerPage extends Component<TimerProps, TimerState> {
             <div className="main">
               <div className="sidebar-layout">
                 <div className="sidebar">
-                  <Times times={this.state.timeList}></Times>
+                  <Times
+                    times={this.state.timeList}
+                    scrambles={this.state.scrambleList}
+                  ></Times>
                 </div>
                 <div className="selection" onClick={this.resetTimes}>
-                  Reset
+                  reset
                 </div>
               </div>
               <div className="timer" onTouchStart={this.handleTouchStart}>

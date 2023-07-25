@@ -29,7 +29,10 @@ function SelectionPage(props: any) {
       <div className="main-selection">
         {Object.keys(categories).map((key, i) => (
           <div>
-            <div className="main-selection-button">
+            <div
+              className="main-selection-button"
+              onClick={props.selectAllInCategoryOnClick(key)}
+            >
               <img src={imgArray[i]} className="co-img"></img>
             </div>
             <Collapsible trigger={key + " ⌄"}>

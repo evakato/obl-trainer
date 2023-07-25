@@ -27,6 +27,7 @@
 .sidebar-layout {
   display: grid;
   grid-template-rows: 1fr 50px;
+  overflow-y: auto;
 }
 
 .main {
